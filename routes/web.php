@@ -20,6 +20,9 @@ Route::middleware(['guest'])->group(function () {
     Route::get('login', function () {
         return view('auth.login');
     })->name('login');
+    /**
+     * Login | Password-Recovery
+     */
     Route::post('login', 'Auth\LoginController@login')->name('login');
     Route::get('password/recovery', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
     Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
