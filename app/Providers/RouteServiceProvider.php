@@ -35,39 +35,63 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map()
     {
-        $this->mapApiRoutes();
 
-        $this->mapWebRoutes();
+        $routes = [
+            [
+                'prefix' => null,
+                'middleware' => [
+                    'web',
+                ],
+                'namespace' => '',
+                'routeFile' => 'web.php'
+            ],
+            [
+                'prefix' => 'customer',
+                'middleware' => [
+                    'web',
+                    'auth',
+                ],
+                'namespace' => '\Customer',
+                'routeFile' => 'customer.php'
+            ],
+            [
+                'prefix' => 'supporter',
+                'middleware' => [
+                    'web',
+                    'auth',
+                    'supporter'
+                ],
+                'namespace' => '\Supporter',
+                'routeFile' => 'supporter.php'
+            ],
+            [
+                'prefix' => 'admin',
+                'middleware' => [
+                    'web',
+                    'auth',
+                    'admin'
+                ],
+                'namespace' => '\Admin',
+                'routeFile' => 'admin.php'
+            ]
+        ];
 
-        //
+        foreach ($routes as $item => $value) {
+            $this->routeRegister($value['prefix'], $value['middleware'], $value['namespace'], $value['routeFile']);
+        }
+
     }
 
-    /**
-     * Define the "web" routes for the application.
-     *
-     * These routes all receive session state, CSRF protection, etc.
-     *
-     * @return void
-     */
-    protected function mapWebRoutes()
+    protected function routeRegister($prefix = null, array $middleware, $namespace = '', $routeFile)
     {
-        Route::middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/web.php'));
-    }
-
-    /**
-     * Define the "api" routes for the application.
-     *
-     * These routes are typically stateless.
-     *
-     * @return void
-     */
-    protected function mapApiRoutes()
-    {
-        Route::prefix('api')
-             ->middleware('api')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/api.php'));
+        if ($prefix)
+            Route::prefix($prefix)
+                ->middleware($middleware)
+                ->namespace($this->namespace.$namespace)
+                ->group(base_path('routes\\'.$routeFile));
+        else
+            Route::middleware($middleware)
+                ->namespace($this->namespace.$namespace)
+                ->group(base_path('routes\\'.$routeFile));
     }
 }
