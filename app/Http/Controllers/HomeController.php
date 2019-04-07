@@ -20,6 +20,7 @@ class HomeController extends Controller
      * Show the application dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function index()
     {

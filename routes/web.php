@@ -11,13 +11,18 @@
 |
 */
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware(['guest'])->group(function () {
+    Route::get('/', function () {
+        return view('auth.login');
+    })->name('login.request');
+    Route::get('login', function () {
+        return view('auth.login');
+    })->name('login');
+    Route::post('login', 'Auth\LoginController@login')->name('login');
+    Route::get('password/recovery', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+    Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+    Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+    Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
 });
-
-Auth::routes([
-    'register' => false
-]);
