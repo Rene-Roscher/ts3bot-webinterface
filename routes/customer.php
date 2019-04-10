@@ -9,3 +9,4 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'DashboardController@index')->name('customer.dashboard');
+//Route::middleware('throttle:rate_limit,5')->get('/test', 'DashboardController@index')->name('customer.dashboard');
