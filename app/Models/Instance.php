@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Instance extends Model
 {
-
     protected $fillable = [
         'user_id', 'name', 'configuration',
     ];
@@ -21,11 +20,13 @@ class Instance extends Model
         return $this->hasMany(Bot::class, 'instance_id', 'id');
     }
 
-    public function getConfigurationAttribute($value) {
+    public function getConfigurationAttribute($value)
+    {
         return json_decode($value);
     }
 
-    public function setConfigurationAttribute($value) {
+    public function setConfigurationAttribute($value)
+    {
         $this->attributes['configuration'] = json_encode($value);
     }
 

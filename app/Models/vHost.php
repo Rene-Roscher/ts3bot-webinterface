@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use function decrypt, encrypt;
 use Illuminate\Database\Eloquent\Model;
 
 class vHost extends Model
@@ -12,11 +13,13 @@ class vHost extends Model
         'name', 'ip_address', 'token', 'port'
     ];
 
-    public function getTokenAttribute($value) {
+    public function getTokenAttribute($value)
+    {
         return decrypt($value);
     }
 
-    public function setTokenAttribute($value) {
+    public function setTokenAttribute($value)
+    {
         $this->attributes['token'] = encrypt($value);
     }
 
